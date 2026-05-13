@@ -1,4 +1,3 @@
-// 文件头部 import 保持不变
 import {
   DEFAULT_MODEL,
   MODELS,
@@ -7,7 +6,39 @@ import {
   PROMPT_3
 } from "./config.js";
 
-// 其余辅助函数（resp、isAllowedModel、builtinPromptForModel、clientConfigJs）保持不变
+function resp(body, contentType = "text/plain; charset=utf-8", status = 200, extraHeaders = {}) {
+  return new Response(body, {
+    status,
+    headers: {
+      "Content-Type": contentType,
+      ...extraHeaders
+    }
+  });
+}
+
+function isAllowedModel(modelId) {
+  return MODELS.some((m) => m.id === modelId);
+}
+
+function builtinPromptForModel(modelId) {
+  const meta = MODELS.find((m) => m.id === modelId);
+  const persona = meta?.persona ?? 1;
+
+  if (persona === 3) return PROMPT_3;
+  if (persona === 2) return PROMPT_2;
+  return PROMPT_1;
+}
+
+function clientConfigJs() {
+  const models = MODELS.map((m) => ({
+    id: m.id,
+    label: m.label
+  }));
+
+  return `window.APP_MODELS = ${JSON.stringify(models, null, 2)};
+window.APP_DEFAULT_MODEL = ${JSON.stringify(DEFAULT_MODEL)};
+`;
+}
 
 async function handleChat(request, env) {
   let payload;
@@ -44,13 +75,13 @@ async function handleChat(request, env) {
   for (const msg of messages) {
     if (!msg || typeof msg !== "object") continue;
     if (msg.role !== "user" && msg.role !== "assistant") continue;
+
     upstreamMessages.push({
       role: msg.role,
       content: typeof msg.content === "string" ? msg.content : ""
     });
   }
 
-  // 修改：使用 SILICONFLOW_API_KEY
   if (!env.SILICONFLOW_API_KEY) {
     return resp(
       "Missing SILICONFLOW_API_KEY (please set it with wrangler secret).",
@@ -59,7 +90,6 @@ async function handleChat(request, env) {
     );
   }
 
-  // 修改：API 地址改为硅基流动
   const upstream = await fetch("https://api.siliconflow.cn/v1/chat/completions", {
     method: "POST",
     headers: {
@@ -69,6 +99,7 @@ async function handleChat(request, env) {
     body: JSON.stringify({
       model,
       stream: true,
+      stream_options: { include_usage: true },
       messages: upstreamMessages
     })
   });
@@ -95,15 +126,19 @@ async function handleChat(request, env) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+
     if (request.method === "GET" && url.pathname === "/config.js") {
       return resp(clientConfigJs(), "text/javascript; charset=utf-8");
     }
+
     if (request.method === "POST" && url.pathname === "/api/chat") {
       return handleChat(request, env);
     }
+
     if (env.ASSETS && typeof env.ASSETS.fetch === "function") {
       return env.ASSETS.fetch(request);
     }
+
     return resp(
       "Static assets binding 'ASSETS' is missing. Please configure [assets] in wrangler.toml.",
       "text/plain; charset=utf-8",
