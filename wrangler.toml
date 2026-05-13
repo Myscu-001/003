@@ -1,4 +1,4 @@
-name = "unlimited-ai1"
+name = 'unlimited-ai002'
 main = "src/worker.js"
 compatibility_date = "2026-03-11"
 
@@ -6,3 +6,4 @@ compatibility_date = "2026-03-11"
 directory = "./public"
 binding = "ASSETS"
 run_worker_first = ["/api/*", "/config.js"]
+
