@@ -7,13 +7,15 @@
 export const CHAT_PASSWORD = "123456";
 
 // 默认模型
-export const DEFAULT_MODEL = "Pro/zai-org/GLM-5.1";
+export const DEFAULT_MODEL = "Pro/zai-org/GLM-5";
 
 // 模型列表（label 是下拉显示；persona=1 使用 PROMPT_1；persona=2 使用 PROMPT_2）
 export const MODELS = [
-  { id: "Pro/zai-org/GLM-5.1", label: "Pro/zai-org/GLM-5.1", persona: 1 },
-
+  { id: "deepseek-ai/deepseek-v4-pro", label: "deepseek-v4-pro", persona: 1 },
+  { id: "Pro/zai-org/GLM-5", label: "Pro/zai-org/GLM-5", persona: 2 },
+  { id: "openai/gpt-oss-120b", label: "gpt-oss-120b", persona: 3 },
 ];
+
 
 // 内置人物模板 #1（deepseek/glm）——不会下发到网页
 export const PROMPT_1 = `
