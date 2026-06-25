@@ -26,7 +26,7 @@
 
   const MODELS = (window.APP_MODELS || [
     { id: "deepseek-ai/deepseek-v4-pro", label: "deepseek-v4-pro" },
-    { id: "z-ai/glm-5.1", label: "glm-5.1" },
+    { id: "zai-org/GLM-5.2", label: "glm-5.2" },
     { id: "openai/gpt-oss-120b", label: "gpt-oss-120b" },
   ]);
 
