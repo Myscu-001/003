@@ -3,5 +3,5 @@
 window.APP_MODELS = [
   { id: "deepseek-ai/DeepSeek-V4-Flash", label: "deepseek-ai/deepseek-v4-pro" },
   { id: "z-ai/glm-5.1", label: "glm-5.1" },
-  { id: "openai/gpt-oss-120b", label: "gpt-oss-120b" },
+  { id: "Qwen/Qwen3.6-35B-A3B", label: "gpt-oss-120b" },
 ];
