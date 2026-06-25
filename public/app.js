@@ -25,9 +25,9 @@
   const donateClose = document.getElementById("donateClose");
 
   const MODELS = (window.APP_MODELS || [
-    { id: "deepseek-ai/deepseek-v4-pro", label: "deepseek-v4-pro" },
+    { id: "deepseek-ai/DeepSeek-V4-Flash", label: "deepseek-v4-pro" },
     { id: "Pro/zai-org/GLM-5.1", label: "glm-5.1" },
-    { id: "openai/gpt-oss-120b", label: "gpt-oss-120b" },
+    { id: "Qwen/Qwen3.6-35B-A3B", label: "qwen" },
   ]);
 
   const session = [];
